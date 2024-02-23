@@ -8,6 +8,7 @@ with open('HTN_2023_BE_Challenge_Data.json', 'r') as file:
 def etl_user_skills(conn, data):
     with conn.cursor() as cur:
         for user in data:
+            print(f"Processing user: {user['name']}")
             user_id = str(uuid.uuid4())
             cur.execute("""
                         INSERT INTO users (id, name, company, email, phone) VALUES (%s, %s, %s, %s, %s) ON CONFLICT (email) DO NOTHING;
@@ -32,7 +33,7 @@ def etl_user_skills(conn, data):
                             INSERT INTO users_skills (user_id, skill_id, rating) VALUES (%s, %s, %s) ON CONFLICT (user_id, skill_id) DO UPDATE SET rating = EXCLUDED.rating;
                             """, (user_id, skill_id, skill['rating']))
                 
-            conn.commit()
+        conn.commit()
 
 
 connection_config = {
@@ -45,6 +46,7 @@ connection_config = {
 if __name__ == "__main__":
     conn = psycopg2.connect(**connection_config)
     try:
+        print("Executing ETL for user and skills...")
         etl_user_skills(conn, data)
     finally:
         conn.close()

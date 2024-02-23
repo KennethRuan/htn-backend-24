@@ -12,17 +12,20 @@ COPY --from=builder /app/client ./
 RUN npm install
 RUN npm run build
 
-# Install Python Dependencies for ETL
-RUN apk add --no-cache python3 py3-pip
-COPY --from=builder /app/etl ./
-RUN pip3 install --no-cache-dir -r /requirements.txt
-
 # Final stage build
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
+
+# Install Python and create a virtual environment
+RUN apk add --no-cache python3 py3-pip
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+# Install Python Dependencies for ETL
+COPY --from=builder /app/etl ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 COPY --from=builder /main ./
 COPY --from=node_builder /build ./web
 RUN chmod +x ./main
 EXPOSE 8080
 CMD ./main
-

@@ -24,9 +24,13 @@ const RequestEndpointDropdown = ({
     GET: [
       { label: "Get All Users", endpoint: "/api/users" },
       { label: "Get User by ID", endpoint: "/api/users/:id" },
+      {
+        label: "Get Skills by Frequency",
+        endpoint: "/api/skills/?min_frequency=15&max_frequency=20",
+      },
     ],
     POST: [],
-    PUT: [],
+    PUT: [{ label: "Update User by ID", endpoint: "/api/users/:id" }],
     DELETE: [],
   };
 
