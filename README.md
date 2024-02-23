@@ -4,6 +4,8 @@ Submission for the 2024 HTN BE Challenge.
 
 The application consists of a Go backend, PostgreSQL database, and React frontend.
 
+**Demo it [here!](https://stark-peak-96491-195ee981cc50.herokuapp.com/)**
+
 ## About The Project
 
 This project was my first time trying out Go for backend development. It was a lot of learning and I am excited to continue experimenting with it!
