@@ -18,6 +18,10 @@ RUN apk --no-cache add ca-certificates
 
 # Install Python and create a virtual environment
 RUN apk add --no-cache python3 py3-pip
+# Install netcat
+RUN apk add --no-cache netcat-openbsd
+
+# Setup venv
 RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 # Install Python Dependencies for ETL
@@ -28,4 +32,8 @@ COPY --from=builder /main ./
 COPY --from=node_builder /build ./web
 RUN chmod +x ./main
 EXPOSE 8080
-CMD ./main
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

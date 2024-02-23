@@ -7,4 +7,4 @@ build:
 release:
   image: worker
   command:
-    - sh -c './migrate.sh && python ./etl_user_skills.py'
+    - ./migrate.sh

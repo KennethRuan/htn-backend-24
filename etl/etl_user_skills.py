@@ -40,7 +40,7 @@ connection_config = {
     "dbname": "postgres",
     "user": "user",
     "password": "password",
-    "host": "localhost"
+    "host": "db"
 }
 
 if __name__ == "__main__":

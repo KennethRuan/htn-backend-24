@@ -8,13 +8,13 @@ function App() {
   const [requestEndpoint, setRequestEndpoint] = useState("");
   const [response, setResponse] = useState<any>(null);
   const [showBody, setShowBody] = useState(false);
-  const [body, setBody] = useState<any>(null);
+  const [body, setBody] = useState<any>("");
 
   const fetchRequest = async () => {
     const adr = `${requestEndpoint}`;
     console.log(adr);
     try {
-      const response = await fetch(adr, {
+      const requestOptions: RequestInit = {
         method: requestMethod,
         headers: {
           Accept: "*/*",
@@ -22,8 +22,18 @@ function App() {
           Connection: "keep-alive",
           "Content-Type": "application/json",
         },
-        body: body,
-      });
+      };
+      // Attach the body to the request, must not be GET request and must be a valid JSON
+      if (requestMethod !== "GET") {
+        try {
+          const obj = JSON.parse(body);
+          requestOptions.body = JSON.stringify(obj);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      const response = await fetch(adr, requestOptions);
       try {
         const text = await response.text();
         // setResponse(text);
